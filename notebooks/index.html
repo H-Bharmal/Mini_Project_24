@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ocular Disease Detection</title>
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div class="container">
+
+        <h1 class="heading">Upload an Image for Disease Detection</h1>
+        <div class="formContainer">
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <div>
+                    <label for="imgupload">Choose File 💻</label>
+                    <input type="file" id="imgupload" name="file" required hidden>
+                </div>
+                <div>
+                    <input type="submit" value="Upload Image" class="btn">
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
