@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { userSchema } from "./user.model.js";
 
-const docotorSchema = new mongoose.Schema({
+const doctorSchema = new mongoose.Schema({
     ...userSchema.obj,
     
     doctorId : {

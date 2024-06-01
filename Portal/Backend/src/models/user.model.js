@@ -37,7 +37,7 @@ const userSchema = new mongoose.Schema({
         },
         dob : {
             type : Date,
-            required : true,
+            // required : true,
         },
         password : {
             type : String,
@@ -58,6 +58,11 @@ const userSchema = new mongoose.Schema({
         profilePicture : {
             type : String,      // cloudinary url
             default : null
+        },
+        role:{
+            type:String,
+            enum : ["Doctor", "Patient"],
+            default : "Patient"
         }
 },
 {timestamps : true});
@@ -77,33 +82,33 @@ userSchema.statics.isPasswordCorrect = async function(password){
 }
 
 // Web Token for login logout
-userSchema.statics.generateRefreshToken = function(){
-    return jwt.sign(
-        {
-            _id : this._id,
-        },
+// userSchema.statics.generateRefreshToken = function(){
+//     return jwt.sign(
+//         {
+//             _id : this._id,
+//         },
         
-        process.env.REFRESH_TOKEN_SECRET, 
+//         process.env.REFRESH_TOKEN_SECRET, 
         
-        {
-            expiresIn : process.env.REFRESH_TOKEN_EXPIRY
-        }
-        )
-}
-userSchema.statics.generateAccessToken = function(){
-    return jwt.sign(
-        {
-            _id : this._id,
-            email : this.email
-        },
+//         {
+//             expiresIn : process.env.REFRESH_TOKEN_EXPIRY
+//         }
+//         )
+// }
+// userSchema.statics.generateAccessToken = function(){
+//     return jwt.sign(
+//         {
+//             _id : this._id,
+//             email : this.email
+//         },
         
-        process.env.ACCESS_TOKEN_SECRET, 
+//         process.env.ACCESS_TOKEN_SECRET, 
         
-        {
-            expiresIn : process.env.ACCESS_TOKEN_EXPIRY
-        }
-        )
-}
+//         {
+//             expiresIn : process.env.ACCESS_TOKEN_EXPIRY
+//         }
+//         )
+// }
 userSchema.statics.changePassword = async function(currentPassword, newPassword){
     // console.log("Inside userSchema changepassword method");
     // verify the passwords
@@ -120,6 +125,44 @@ userSchema.statics.changePassword = async function(currentPassword, newPassword)
     }
 }
 
+//directly authenticating using User
+userSchema.pre('save', async function(next){
+    await userSchema.statics.encryptPassword.call(this, next);
+});
 
-// const User = mongoose.model("User", userSchema);
-export {userSchema};
+userSchema.methods.generateRefreshToken = async function(){
+    return jwt.sign(
+        {
+            _id : this._id,
+        },
+        
+        process.env.REFRESH_TOKEN_SECRET, 
+        
+        {
+            expiresIn : process.env.REFRESH_TOKEN_EXPIRY
+        }
+    )
+    // return userSchema.statics.generateRefreshToken.call(this);
+}
+userSchema.methods.generateAccessToken = async function(){
+    return jwt.sign(
+        {
+            _id : this._id,
+            email : this.email
+        },
+        
+        process.env.ACCESS_TOKEN_SECRET, 
+        
+        {
+            expiresIn : process.env.ACCESS_TOKEN_EXPIRY
+        }
+    )
+    // return userSchema.statics.generateAccessToken.call(this);
+}
+
+userSchema.methods.isPasswordCorrect = async function(password){
+    return userSchema.statics.isPasswordCorrect.call(this, password);
+}
+
+const User = mongoose.model("User", userSchema);
+export {userSchema, User};
