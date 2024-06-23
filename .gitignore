@@ -8,3 +8,8 @@ raw_data/
 Makefile
 models/
 Documentation - Raw
+Dataset
+*.h5
+*.pth
+Final/notebooks/images
+Final/notebooks/esrgan/RRDB_ESRGAN_x4.pth

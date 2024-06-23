@@ -1,4 +1,31 @@
+<!-- Updated -->
+notebook/index.html
+
 <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detection result</title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <form action="/upload" method="post" enctype="multipart/form-data">
+    <div>
+      <h1><label for="imgupload">Choose File for the detection</label></h1>
+      <input type="file" id="imgupload" name="file" required hidden>
+    </div>
+    
+    <div>
+      <br><br><br><br><br><br><br><br><br><br><br>
+      <input type="submit" value="Upload Image" class="btn">
+    </div>
+  </form>
+</body>
+</html>
+
+
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -22,4 +49,4 @@
         </div>
     </div>
 </body>
-</html>
+</html> -->
